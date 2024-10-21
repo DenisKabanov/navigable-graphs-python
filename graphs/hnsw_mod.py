@@ -124,7 +124,7 @@ class HNSW_mod:
         # for layer in reversed(graphs[level:]): # идём по уровням, начиная с самого верхнего (малозаполненного)
         #     point, dist = self.beam_search(layer, q=q, k=1, eps=[point], ef=1)[0] # находим ближайшую (?) точку на уровне к запросу q => она станет стартовой для следующего уровня
         # return self.beam_search(graph=graphs[level], q=q, k=k, eps=[point], ef=ef, return_observed=return_observed) # запускаем поиск на самом нижнем уровне со всеми вершинами
-        #================ search function with calcs on layers ===================
+        #--------------- search function with calcs on layers -------------------
         observed_count = 0 # счётчик реального числа вызовов функции подсчёта дистанции
         for layer in reversed(graphs[level:]): # идём по уровням, начиная с самого верхнего (малозаполненного)
             observed = self.beam_search(layer, q=q, k=1, eps=[point], ef=1, return_observed=return_observed) # находим ближайшую (?) точку на уровне к запросу q => она станет стартовой для следующего уровня
