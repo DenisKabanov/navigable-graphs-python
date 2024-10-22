@@ -35,25 +35,25 @@ def main():
 
 
     # тестирование графов
-    # recalls = {} # словарь под recall
-    # avg_calls = {} # словарь под среднее число подсчётов дистанции
+    recalls = {} # словарь под recall
+    avg_calls = {} # словарь под среднее число подсчётов дистанции
 
     # тестирование Km Graph
-    # kg = KmGraph(k=args.K, dim=args.dim, dist_func=l2_distance, data=train_data, M=args.M)
-    # recalls["KmGraph"], avg_calls["KmGraph"] = calculate_recall(kg, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m)
-    # print(f"Средний recall: {recalls['KmGraph']:.4f}, среднее число подсчётов расстояния: {avg_calls['KmGraph']}.")
+    kg = KmGraph(k=args.K, dim=args.dim, dist_func=l2_distance, data=train_data, M=args.M)
+    recalls["KmGraph"], avg_calls["KmGraph"] = calculate_recall(kg, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m)
+    print(f"Средний recall: {recalls['KmGraph']:.4f}, среднее число подсчётов расстояния: {avg_calls['KmGraph']}.")
 
     # тестирование Graph Voronoi
-    # vg = GraphVoronoi(k=args.K, dist_func=l2_distance, data=train_data)
-    # recalls["GraphVoronoi"], avg_calls["GraphVoronoi"] = calculate_recall(vg, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m)
-    # print(f"Средний recall: {recalls['GraphVoronoi']:.4f}, среднее число подсчётов расстояния: {avg_calls['GraphVoronoi']}.")
+    vg = GraphVoronoi(k=args.K, dist_func=l2_distance, data=train_data)
+    recalls["GraphVoronoi"], avg_calls["GraphVoronoi"] = calculate_recall(vg, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m)
+    print(f"Средний recall: {recalls['GraphVoronoi']:.4f}, среднее число подсчётов расстояния: {avg_calls['GraphVoronoi']}.")
 
     # тестирование HNSW
-    # hnsw = HNSW(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
-    # for x in tqdm(train_data): # добавляем точки в HNSW граф
-    #     hnsw.add(x)
-    # recalls["HNSW"], avg_calls["HNSW"] = calculate_recall_hnsw(l2_distance, hnsw, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m) # считаем метрики при построенном HNSW графе и запросах test_data, при условии что ответ — groundtruth_data
-    # print(f"Средний recall: {recalls['HNSW']:.4f}, среднее число подсчётов расстояния: {avg_calls['HNSW']}.")
+    hnsw = HNSW(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
+    for x in tqdm(train_data): # добавляем точки в HNSW граф
+        hnsw.add(x)
+    recalls["HNSW"], avg_calls["HNSW"] = calculate_recall_hnsw(l2_distance, hnsw, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m) # считаем метрики при построенном HNSW графе и запросах test_data, при условии что ответ — groundtruth_data
+    print(f"Средний recall: {recalls['HNSW']:.4f}, среднее число подсчётов расстояния: {avg_calls['HNSW']}.")
 
     # hnsw_ = HNSW_mod(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
     # for x in tqdm(train_data): # добавляем точки в HNSW граф
@@ -68,57 +68,77 @@ def main():
     # recalls["HNSW_mod"], avg_calls["HNSW_mod"] = calculate_recall_hnsw_real(l2_distance, hnsw_, test_data, groundtruth_data, k=args.k, ef=args.ef, m=args.m) # считаем метрики при построенном HNSW графе и запросах test_data, при условии что ответ — groundtruth_data
 
     # выводим получившиеся результаты
-    # print("Общее сравнение:")
-    # for graph_type in recalls.keys():
-    #     print(f"Для {graph_type} средний recall: {recalls[graph_type]:.4f}, среднее число подсчётов расстояния: {avg_calls[graph_type]}.")
+    print("Общее сравнение:")
+    for graph_type in recalls.keys():
+        print(f"Для {graph_type} средний recall: {recalls[graph_type]:.4f}, среднее число подсчётов расстояния: {avg_calls[graph_type]}.")
 
 
     # построение графиков
-    import matplotlib.pyplot as plt # для построения графиков
-    recalls = {} # словарь под recall
-    avg_calls = {} # словарь под среднее число подсчётов дистанции
-    ef_params = range(5, 50, 2) # параметр для рассмотрения
-    graph_types = ["KmGraph", "GraphVoronoi", "HNSW", "HNSW real"]
-    colors = {"KmGraph": "blue", "GraphVoronoi": "green", "HNSW": "red", "HNSW real": "orange"}
+    # import matplotlib.pyplot as plt # для построения графиков
+    # import numpy as np
+    # import pickle # для сохранения метрик
+    # recalls = {} # словарь под recall
+    # avg_calls = {} # словарь под среднее число подсчётов дистанции
+    # ef_params = range(5, 50, 2) # параметр для рассмотрения
+    # graph_types = ["KmGraph", "GraphVoronoi", "HNSW", "HNSW real"]
+    # colors = {"KmGraph": "blue", "GraphVoronoi": "green", "HNSW": "red", "HNSW real": "orange"}
 
-    kg = KmGraph(k=args.K, dim=args.dim, dist_func=l2_distance, data=train_data, M=args.M)
+    # kg = KmGraph(k=args.K, dim=args.dim, dist_func=l2_distance, data=train_data, M=args.M)
 
-    vg = GraphVoronoi(k=args.K, dist_func=l2_distance, data=train_data)
+    # vg = GraphVoronoi(k=args.K, dist_func=l2_distance, data=train_data)
 
-    hnsw = HNSW(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
-    for x in tqdm(train_data): # добавляем точки в HNSW граф
-        hnsw.add(x)
+    # hnsw = HNSW(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
+    # for x in tqdm(train_data): # добавляем точки в HNSW граф
+    #     hnsw.add(x)
 
-    hnsw_ = HNSW_mod(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
-    for x in tqdm(train_data): # добавляем точки в HNSW граф
-        hnsw_.add(x)
+    # hnsw_ = HNSW_mod(distance_func=l2_distance, m=args.M, m0=args.M0, ef=10, ef_construction=30, neighborhood_construction=heuristic)
+    # for x in tqdm(train_data): # добавляем точки в HNSW граф
+    #     hnsw_.add(x)
 
-    for graph_type in graph_types:
-        recalls[graph_type] = {}
-        avg_calls[graph_type] = {}
-        for ef in ef_params: # идём по значению параметра ef
-            if graph_type == "KmGraph":
-                recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall(kg, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
-            if graph_type == "GraphVoronoi":
-                recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall(vg, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
-            if graph_type == "HNSW":
-                recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall_hnsw(l2_distance, hnsw, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
-            if graph_type == "HNSW real":
-                recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall_hnsw_real(l2_distance, hnsw_, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
+    # for graph_type in graph_types:
+    #     recalls[graph_type] = {}
+    #     avg_calls[graph_type] = {}
+    #     for ef in ef_params: # идём по значению параметра ef
+    #         random.seed(108) # фиксируем параметр для генерации случайных чисел
+    #         if graph_type == "KmGraph":
+    #             recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall(kg, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
+    #         if graph_type == "GraphVoronoi":
+    #             recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall(vg, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
+    #         if graph_type == "HNSW":
+    #             recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall_hnsw(l2_distance, hnsw, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
+    #         if graph_type == "HNSW real":
+    #             recalls[graph_type][ef], avg_calls[graph_type][ef] = calculate_recall_hnsw_real(l2_distance, hnsw_, test_data, groundtruth_data, k=args.k, ef=ef, m=args.m)
 
-    fig, axes = plt.subplots(ncols=2, figsize=(20,8)) # создаём фигуру с несколькими подграфиками (ncols и/или nrows) размера figsize
-    for graph_type in graph_types:
-        axes[0].plot(recalls[graph_type].keys(), recalls[graph_type].values(), color=colors[graph_type], label=graph_type)
-        axes[1].plot(avg_calls[graph_type].keys(), avg_calls[graph_type].values(), color=colors[graph_type], label=graph_type)
-    axes[0].set_title("Зависимость recall от 'ef'") # название фигуры
-    axes[0].set_xlabel("Значение параметра 'ef'") # подпись по оси OX
-    axes[0].set_ylabel("Recall") # подпись по оси OY
-    axes[0].legend(loc="upper left")
-    axes[1].set_title("Зависимость среднего числа подсчётов расстояния от 'ef'") # название фигуры
-    axes[1].set_xlabel("Значение параметра 'ef'") # подпись по оси OX
-    axes[1].set_ylabel("Среднее число подсчётов дистанции") # подпись по оси OY
-    axes[1].legend(loc="upper left")
-    plt.show() # показ фигуры
+    # fig, axes = plt.subplots(ncols=2, figsize=(20,8)) # создаём фигуру с несколькими подграфиками (ncols и/или nrows) размера figsize
+    # for graph_type in graph_types:
+    #     axes[0].plot(recalls[graph_type].keys(), recalls[graph_type].values(), color=colors[graph_type], label=graph_type)
+    #     axes[1].plot(avg_calls[graph_type].keys(), avg_calls[graph_type].values(), color=colors[graph_type], label=graph_type)
+    # axes[0].set_title("Зависимость recall от 'ef'") # название фигуры
+    # axes[0].set_xlabel("Значение параметра 'ef'") # подпись по оси OX
+    # axes[0].set_ylabel("Recall") # подпись по оси OY
+    # axes[0].legend(loc="upper left")
+    # axes[1].set_title("Зависимость среднего числа подсчётов расстояния от 'ef'") # название фигуры
+    # axes[1].set_xlabel("Значение параметра 'ef'") # подпись по оси OX
+    # axes[1].set_ylabel("Среднее число подсчётов дистанции") # подпись по оси OY
+    # axes[1].legend(loc="upper left")
+    # plt.show() # показ фигуры
+
+
+    # plt.figure(figsize=(10,8)) # создаём фигуру с несколькими подграфиками (ncols и/или nrows) размера figsize
+    # nodes_count = len(hnsw.data) # число вершин в графе
+    # for graph_type in graph_types:
+    #     plt.plot(recalls[graph_type].values(), nodes_count/np.array(list(avg_calls[graph_type].values())), color=colors[graph_type], label=graph_type)
+    # plt.title("Соотношение recall к (число вершин графа / количество подсчётов дистанции)")
+    # plt.xlabel("Recall")
+    # plt.xlim([0.96,1.001])
+    # plt.ylabel("Число вершин графа / Количество подсчётов дистанции")
+    # plt.legend()
+    # plt.show() # показ фигуры
+
+    # with open(f"./metrics/recalls.pkl", 'wb') as f: # открытие файла для бинарной ('b') записи ('w')
+    #     pickle.dump(recalls, f) # сохраняем модель
+    # with open(f"./metrics/avg_calls.pkl", 'wb') as f: # открытие файла для бинарной ('b') записи ('w')
+    #     pickle.dump(avg_calls, f) # сохраняем модель
 
 if __name__ == "__main__":
     main()
